@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harrisun Raj Mohan — AI Product Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #020508;
+  --bg2: #050d15;
+  --surface: #0a1628;
+  --surface2: #0f2040;
+  --accent: #00d4ff;
+  --accent2: #00ff88;
+  --accent3: #ff6b35;
+  --accent4: #7c3aed;
+  --text: #e2f0ff;
+  --text-dim: #6b8fad;
+  --text-dimmer: #2d4a6b;
+  --border: rgba(0,212,255,0.15);
+  --border-bright: rgba(0,212,255,0.4);
+  --glow: 0 0 20px rgba(0,212,255,0.3);
+  --glow-green: 0 0 20px rgba(0,255,136,0.3);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CUSTOM CURSOR */
+.cursor {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 10000;
+  transition: transform 0.1s;
+  mix-blend-mode: screen;
+}
+.cursor-ring {
+  width: 32px; height: 32px;
+  border: 1px solid rgba(0,212,255,0.5);
+  border-radius: 50%;
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease, width 0.2s, height 0.2s, border-color 0.2s;
+}
+.cursor-ring.hover { width: 48px; height: 48px; border-color: var(--accent2); }
+
+/* GRID BACKGROUND */
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* NOISE OVERLAY */
+.noise {
+  position: fixed;
+  inset: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* NEURAL CANVAS */
+#neural-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 20px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(180deg, rgba(2,5,8,0.9) 0%, transparent 100%);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0,212,255,0.05);
+}
+
+.nav-logo {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.nav-logo span { color: var(--accent2); }
+
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+.nav-links a {
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  text-decoration: none;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: color 0.2s;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0; right: 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform 0.2s;
+}
+.nav-links a:hover { color: var(--accent); }
+.nav-links a:hover::after { transform: scaleX(1); }
+
+.nav-cta {
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--accent);
+  border: 1px solid var(--border-bright);
+  padding: 8px 20px;
+  text-decoration: none;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+.nav-cta:hover {
+  background: rgba(0,212,255,0.1);
+  box-shadow: var(--glow);
+}
+
+/* HERO */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 100px 60px 60px;
+  z-index: 10;
+}
+
+.hero-content {
+  max-width: 900px;
+}
+
+.hero-tag {
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--accent2);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  animation: fadeUp 0.6s ease 0.2s forwards;
+}
+.hero-tag::before {
+  content: '';
+  width: 40px; height: 1px;
+  background: var(--accent2);
+}
+
+.hero-name {
+  font-size: clamp(56px, 8vw, 96px);
+  font-weight: 800;
+  line-height: 0.95;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.6s ease 0.4s forwards;
+}
+.hero-name .line1 { display: block; }
+.hero-name .line2 {
+  display: block;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 50%, var(--accent4) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-title {
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 40px;
+  line-height: 1.8;
+  max-width: 600px;
+  opacity: 0;
+  animation: fadeUp 0.6s ease 0.6s forwards;
+}
+.hero-title .highlight { color: var(--accent); }
+
+.hero-metrics {
+  display: flex;
+  gap: 48px;
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: fadeUp 0.6s ease 0.8s forwards;
+}
+.metric-item {}
+.metric-val {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+  font-family: 'Space Mono', monospace;
+}
+.metric-val.green { color: var(--accent2); }
+.metric-val.orange { color: var(--accent3); }
+.metric-label {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  opacity: 0;
+  animation: fadeUp 0.6s ease 1s forwards;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--bg);
+  padding: 14px 32px;
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent2);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: -1;
+}
+.btn-primary:hover { box-shadow: var(--glow); }
+.btn-primary:hover::after { transform: translateX(0); }
+
+.btn-secondary {
+  border: 1px solid var(--border-bright);
+  color: var(--accent);
+  padding: 14px 32px;
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.btn-secondary:hover {
+  background: rgba(0,212,255,0.08);
+  box-shadow: var(--glow);
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 40px;
+  right: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Fira Code', monospace;
+  font-size: 10px;
+  color: var(--text-dimmer);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  opacity: 0;
+  animation: fadeIn 1s ease 1.5s forwards;
+}
+.scroll-line {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(180deg, var(--accent) 0%, transparent 100%);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+@keyframes scrollLine {
+  0%, 100% { opacity: 1; transform: scaleY(1) translateY(0); }
+  50% { opacity: 0.3; transform: scaleY(0.5) translateY(10px); }
+}
+
+/* SECTION BASE */
+section {
+  position: relative;
+  z-index: 10;
+  padding: 100px 60px;
+}
+
+.section-label {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-label::before {
+  content: '';
+  width: 20px; height: 1px;
+  background: var(--accent);
+}
+
+.section-title {
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 60px;
+}
+.section-title span {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ABOUT */
+#about {
+  background: linear-gradient(180deg, transparent 0%, rgba(0,212,255,0.02) 50%, transparent 100%);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.about-text p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+}
+.about-text p strong { color: var(--text); font-weight: 600; }
+.about-text p .accent { color: var(--accent2); font-family: 'Fira Code', monospace; }
+
+.about-stack {}
+.stack-title {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--text-dimmer);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+.tag {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+  transition: all 0.2s;
+  cursor: default;
+}
+.tag:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(0,212,255,0.05);
+  box-shadow: var(--glow);
+}
+.tag.green:hover { border-color: var(--accent2); color: var(--accent2); background: rgba(0,255,136,0.05); box-shadow: var(--glow-green); }
+.tag.purple:hover { border-color: var(--accent4); color: var(--accent4); background: rgba(124,58,237,0.05); }
+
+/* AI PROJECTS - FLAGSHIP */
+#ai-projects {
+  padding-top: 80px;
+}
+
+.projects-grid {
+  display: grid;
+  gap: 2px;
+}
+
+.project-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 48px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--accent);
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+  transform-origin: bottom;
+}
+.project-card:hover::before { transform: scaleY(1); }
+.project-card:hover {
+  background: var(--surface2);
+  border-color: var(--border-bright);
+}
+.project-card.featured {
+  background: linear-gradient(135deg, rgba(0,212,255,0.05) 0%, rgba(0,255,136,0.03) 100%);
+  border-color: rgba(0,212,255,0.2);
+}
+.project-card.featured::before { background: linear-gradient(180deg, var(--accent), var(--accent2)); }
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.project-badge {
+  font-family: 'Fira Code', monospace;
+  font-size: 10px;
+  padding: 4px 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.badge-live { background: rgba(0,255,136,0.1); color: var(--accent2); border: 1px solid rgba(0,255,136,0.3); }
+.badge-live::before { content: '● '; font-size: 8px; }
+.badge-build { background: rgba(0,212,255,0.1); color: var(--accent); border: 1px solid rgba(0,212,255,0.3); }
+.badge-shipped { background: rgba(255,107,53,0.1); color: var(--accent3); border: 1px solid rgba(255,107,53,0.3); }
+
+.project-num {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--text-dimmer);
+}
+
+.project-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  transition: color 0.2s;
+}
+.project-card:hover .project-title { color: var(--accent); }
+
+.project-subtitle {
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+}
+
+.project-desc {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  max-width: 700px;
+  margin-bottom: 24px;
+}
+
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+.tech-pill {
+  font-family: 'Fira Code', monospace;
+  font-size: 10px;
+  padding: 3px 8px;
+  background: rgba(0,212,255,0.06);
+  border: 1px solid rgba(0,212,255,0.15);
+  color: var(--accent);
+  letter-spacing: 0.5px;
+}
+.tech-pill.green { background: rgba(0,255,136,0.06); border-color: rgba(0,255,136,0.15); color: var(--accent2); }
+
+.project-impact {
+  display: flex;
+  gap: 32px;
+}
+.impact-item {}
+.impact-val {
+  font-family: 'Space Mono', monospace;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent2);
+}
+.impact-label {
+  font-family: 'Fira Code', monospace;
+  font-size: 10px;
+  color: var(--text-dimmer);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* TWO COLUMN PROJECTS */
+.projects-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-top: 2px;
+}
+
+/* EXPERIENCE TIMELINE */
+#experience { background: linear-gradient(180deg, transparent, rgba(0,212,255,0.015), transparent); }
+
+.timeline {
+  position: relative;
+  padding-left: 40px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, var(--accent) 0%, var(--accent4) 50%, transparent 100%);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 60px;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.5s ease;
+}
+.timeline-item.visible { opacity: 1; transform: translateX(0); }
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -44px; top: 6px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.timeline-meta {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--text-dimmer);
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.timeline-meta span { color: var(--accent); }
+
+.timeline-role {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.timeline-company {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+}
+
+.timeline-bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.timeline-bullets li {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  padding-left: 20px;
+  position: relative;
+}
+.timeline-bullets li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-family: 'Fira Code', monospace;
+}
+.timeline-bullets li strong { color: var(--accent2); font-family: 'Fira Code', monospace; font-size: 13px; }
+
+/* AI SKILLS */
+#skills { }
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.skill-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 32px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.skill-panel::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+.skill-panel:hover::after { transform: scaleX(1); }
+.skill-panel:hover { background: var(--surface2); border-color: var(--border-bright); }
+
+.skill-icon {
+  font-size: 28px;
+  margin-bottom: 16px;
+  display: block;
+}
+.skill-panel-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.skill-panel-desc {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--text-dimmer);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.skill-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.skill-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+.skill-bar {
+  width: 80px; height: 2px;
+  background: var(--surface2);
+  border-radius: 1px;
+  overflow: hidden;
+}
+.skill-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 1px;
+  width: 0;
+  transition: width 1s ease;
+}
+
+/* CERTIFICATIONS */
+#certifications { background: linear-gradient(180deg, transparent, rgba(124,58,237,0.03), transparent); }
+
+.certs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+}
+.cert-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 24px;
+  transition: all 0.2s;
+}
+.cert-card:hover {
+  border-color: var(--accent4);
+  background: rgba(124,58,237,0.05);
+  transform: translateY(-2px);
+}
+.cert-org {
+  font-family: 'Fira Code', monospace;
+  font-size: 10px;
+  color: var(--accent4);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.cert-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+/* CONTACT */
+#contact {
+  text-align: center;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+}
+
+.contact-tagline {
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 48px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.7;
+}
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 80px;
+}
+.contact-link {
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  padding: 12px 24px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.contact-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  box-shadow: var(--glow);
+}
+.contact-link span { font-size: 16px; }
+
+.footer-sig {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--text-dimmer);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* TERMINAL BLINK */
+.blink {
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* SCROLL REVEAL */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* STATUS BAR */
+.status-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 28px;
+  background: rgba(5,13,21,0.95);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 1000;
+  gap: 24px;
+}
+.status-item {
+  font-family: 'Fira Code', monospace;
+  font-size: 10px;
+  color: var(--text-dimmer);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent2);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,255,136,0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 4px rgba(0,255,136,0); }
+}
+
+/* GLITCH EFFECT */
+.glitch {
+  position: relative;
+}
+.glitch::before, .glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.glitch::before {
+  color: var(--accent);
+  -webkit-text-fill-color: var(--accent);
+  clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+  animation: glitch1 4s infinite;
+  opacity: 0;
+}
+.glitch::after {
+  color: var(--accent3);
+  -webkit-text-fill-color: var(--accent3);
+  clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+  animation: glitch2 4s infinite;
+  opacity: 0;
+}
+@keyframes glitch1 {
+  0%, 95%, 100% { opacity: 0; transform: none; }
+  96% { opacity: 1; transform: translate(-2px, 1px); }
+  97% { opacity: 0; }
+  98% { opacity: 1; transform: translate(2px, -1px); }
+  99% { opacity: 0; }
+}
+@keyframes glitch2 {
+  0%, 95%, 100% { opacity: 0; transform: none; }
+  96.5% { opacity: 1; transform: translate(2px, 1px); }
+  97.5% { opacity: 0; }
+}
+
+/* SECTION DIVIDER */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--border-bright) 30%, var(--border-bright) 70%, transparent 100%);
+  margin: 0 60px;
+}
+
+/* TOOLS GRID */
+.tools-section { margin-top: 40px; }
+.tools-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 20px;
+}
+.tools-row-label {
+  font-family: 'Fira Code', monospace;
+  font-size: 10px;
+  color: var(--text-dimmer);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  width: 140px;
+  flex-shrink: 0;
+}
+.tools-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tool-chip {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  padding: 4px 10px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  color: var(--text-dim);
+  transition: all 0.2s;
+}
+.tool-chip:hover {
+  background: rgba(0,212,255,0.08);
+  border-color: rgba(0,212,255,0.2);
+  color: var(--accent);
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  nav { padding: 16px 20px; }
+  .nav-links { display: none; }
+  section { padding: 60px 20px; }
+  #hero { padding: 100px 20px 60px; }
+  .hero-metrics { flex-wrap: wrap; gap: 24px; }
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  .skills-grid { grid-template-columns: 1fr; }
+  .certs-grid { grid-template-columns: repeat(2,1fr); }
+  .projects-row { grid-template-columns: 1fr; }
+  .divider { margin: 0 20px; }
+  .hero-scroll { display: none; }
+  body { cursor: auto; }
+  .cursor, .cursor-ring { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="grid-bg"></div>
+<div class="noise"></div>
+<canvas id="neural-canvas"></canvas>
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <div class="status-item">
+    <div class="status-dot"></div>
+    <span>AVAILABLE FOR OPPORTUNITIES</span>
+  </div>
+  <div class="status-item">// BENGALURU, INDIA</div>
+  <div class="status-item">// AI_PM v2.0</div>
+  <div class="status-item" id="time-display">// --:--:--</div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">HRM<span>_</span>Portfolio</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#ai-projects">AI Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="mailto:harrydavidson4@hotmail.com" class="nav-cta">Let's Talk →</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-tag">
+      <span>AI Product Manager</span>
+      <span style="color:var(--text-dimmer)">// Building at the edge of automation</span>
+    </div>
+    <h1 class="hero-name">
+      <span class="line1">Harrisun</span>
+      <span class="line2 glitch" data-text="Raj Mohan">Raj Mohan</span>
+    </h1>
+    <p class="hero-title">
+      I find <span class="highlight">gaps where humans waste time on machines</span>.<br>
+      Then I build the machines that do it better.<br>
+      Product strategy → Architecture → Code → Ship.
+    </p>
+    <div class="hero-metrics">
+      <div class="metric-item">
+        <div class="metric-val" data-count="70">0</div>
+        <div class="metric-label">% test time cut</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-val green" data-count="60">0</div>
+        <div class="metric-label">% release efficiency ↑</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-val orange" data-count="80">0</div>
+        <div class="metric-label">% fewer post-release issues</div>
+      </div>
+    </div>
+    <div class="hero-actions">
+      <a href="#ai-projects" class="btn-primary">See AI Work</a>
+      <a href="https://linkedin.com/in/harrisun-raj-mohan/" target="_blank" class="btn-secondary">LinkedIn ↗</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">01 / About</div>
+  <h2 class="section-title">The <span>PM who ships</span> code too.</h2>
+
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>
+        <strong>I'm not a PM who just writes PRDs and sits in meetings.</strong> I'm the one who spots the broken workflow at 10am and has a working prototype by EOD. With a foundation in aerospace engineering, I think in systems — then I rethink them with AI.
+      </p>
+      <p>
+        Currently at <strong>WeSure Insuretech</strong>, I'm architecting and building <span class="accent">AI-powered automation products</span> that eliminate manual drudgery from insurance operations. Policy checking, release workflows, knowledge management — I've automated them all and am actively leading development on the next wave.
+      </p>
+      <p>
+        My MBA in Data Science and certification from <strong>IIM Lucknow</strong> gives me the business lens. My engineering background gives me the technical intuition. The result: I can talk LLM architectures with your engineers and ROI timelines with your CFO.
+      </p>
+      <div style="margin-top:32px; padding:20px; background:rgba(0,212,255,0.03); border-left:2px solid var(--accent); font-family:'Fira Code',monospace; font-size:12px; color:var(--text-dim); line-height:1.8;">
+        <div style="color:var(--text-dimmer); margin-bottom:8px;">// current focus</div>
+        <div style="color:var(--accent2)">→ AI Policy Checking System <span style="color:var(--text-dimmer)">[IN PROGRESS]</span></div>
+        <div>→ LLM-based process automation</div>
+        <div>→ AI product strategy &amp; roadmapping</div>
+        <div>→ MBA — Data Science &amp; Business Analytics</div>
+      </div>
+    </div>
+
+    <div class="about-stack reveal">
+      <div class="stack-title">// product domains</div>
+      <div class="tag-cloud" style="margin-bottom:24px;">
+        <span class="tag">AI/ML Products</span>
+        <span class="tag">InsureTech</span>
+        <span class="tag">Process Automation</span>
+        <span class="tag">LLM Applications</span>
+        <span class="tag">B2B SaaS</span>
+        <span class="tag">UX Research</span>
+      </div>
+
+      <div class="stack-title">// methodologies</div>
+      <div class="tag-cloud" style="margin-bottom:24px;">
+        <span class="tag green">Agile / Scrum</span>
+        <span class="tag green">Design Thinking</span>
+        <span class="tag green">A3 Thinking</span>
+        <span class="tag green">Lean Six Sigma</span>
+        <span class="tag green">RICE / MoSCoW / KANO</span>
+      </div>
+
+      <div class="stack-title">// i build with</div>
+      <div class="tag-cloud">
+        <span class="tag purple">Python</span>
+        <span class="tag purple">Streamlit</span>
+        <span class="tag purple">SQL</span>
+        <span class="tag purple">JavaScript</span>
+        <span class="tag purple">Figma</span>
+        <span class="tag purple">Tableau</span>
+        <span class="tag purple">PowerBI</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- AI PROJECTS -->
+<section id="ai-projects">
+  <div class="section-label">02 / AI Work</div>
+  <h2 class="section-title">AI systems <span>I've built</span>.</h2>
+
+  <div class="projects-grid">
+
+    <!-- FLAGSHIP PROJECT -->
+    <div class="project-card featured reveal">
+      <div class="project-header">
+        <span class="project-badge badge-live">Active Build</span>
+        <span class="project-num">01 / FLAGSHIP</span>
+      </div>
+      <h3 class="project-title">AI-Powered Policy Checking System</h3>
+      <div class="project-subtitle">WeSure Insuretech — Insurance Policy Automation</div>
+      <p class="project-desc">
+        Architecting and leading development of an AI system that ingests insurance policy documents, runs automated compliance and accuracy checks against business rules, flags anomalies, and generates structured audit reports — replacing a multi-step manual review process. I identified the gap, defined the product, designed the architecture, and am contributing directly to the codebase.
+      </p>
+      <div class="project-tech">
+        <span class="tech-pill">LLM / NLP</span>
+        <span class="tech-pill">Document Intelligence</span>
+        <span class="tech-pill">Python</span>
+        <span class="tech-pill">Rules Engine</span>
+        <span class="tech-pill green">Product Architecture</span>
+        <span class="tech-pill green">Full-Cycle PM</span>
+      </div>
+      <div class="project-impact">
+        <div class="impact-item">
+          <div class="impact-val">~80%</div>
+          <div class="impact-label">manual review time targeted</div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-val">100%</div>
+          <div class="impact-label">coverage vs. sampling</div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-val">0→1</div>
+          <div class="impact-label">product, idea to ship</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="projects-row" style="margin-top:2px;">
+    <div class="project-card reveal">
+      <div class="project-header">
+        <span class="project-badge badge-shipped">Shipped</span>
+        <span class="project-num">02</span>
+      </div>
+      <h3 class="project-title">AI Release Workflow Automation</h3>
+      <div class="project-subtitle">WeSure Insuretech — DevOps &amp; Release Engineering</div>
+      <p class="project-desc">
+        Identified that the manual release coordination process was a bottleneck eating 40% of PM bandwidth. Designed and drove implementation of an automated release pipeline with intelligent validation gates, reducing release cycle time by 60% and post-release defects by 80%.
+      </p>
+      <div class="project-tech">
+        <span class="tech-pill">Process Automation</span>
+        <span class="tech-pill">Workflow Design</span>
+        <span class="tech-pill green">60% faster releases</span>
+        <span class="tech-pill green">80% fewer defects</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-header">
+        <span class="project-badge badge-shipped">Shipped</span>
+        <span class="project-num">03</span>
+      </div>
+      <h3 class="project-title">AI-Augmented Test Case Generator</h3>
+      <div class="project-subtitle">WeSure Insuretech — QA Automation</div>
+      <p class="project-desc">
+        Built an automated test case generation system that takes feature requirements as input and produces structured test suites, cutting QA lead time by 70% and accelerating go-to-market by 2 weeks per release cycle.
+      </p>
+      <div class="project-tech">
+        <span class="tech-pill">Test Automation</span>
+        <span class="tech-pill">Python</span>
+        <span class="tech-pill green">70% faster QA</span>
+        <span class="tech-pill green">-2 weeks GTM</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="projects-row" style="margin-top:2px;">
+    <div class="project-card reveal">
+      <div class="project-header">
+        <span class="project-badge badge-shipped">Shipped</span>
+        <span class="project-num">04</span>
+      </div>
+      <h3 class="project-title">Roadmap Planning &amp; Visualization Tool</h3>
+      <div class="project-subtitle">Personal Project — Streamlit Application</div>
+      <p class="project-desc">
+        Built an interactive product roadmap manager with dynamic Gantt charts, milestone dependency tracking, real-time scheduling conflict detection, and exportable outputs for stakeholder presentations.
+      </p>
+      <div class="project-tech">
+        <span class="tech-pill">Python</span>
+        <span class="tech-pill">Streamlit</span>
+        <span class="tech-pill">Data Viz</span>
+        <span class="tech-pill green">PM Tooling</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-header">
+        <span class="project-badge badge-shipped">Shipped</span>
+        <span class="project-num">05</span>
+      </div>
+      <h3 class="project-title">Feature Prioritization AI Tool</h3>
+      <div class="project-subtitle">Personal Project — PM Toolkit</div>
+      <p class="project-desc">
+        Streamlit app implementing 6 prioritization frameworks (RICE, MoSCoW, KANO, and more) with real-time scoring, visual comparisons, and exportable decision matrices. Built to eliminate gut-feel from product decisions.
+      </p>
+      <div class="project-tech">
+        <span class="tech-pill">Python</span>
+        <span class="tech-pill">Streamlit</span>
+        <span class="tech-pill">RICE / MoSCoW / KANO</span>
+        <span class="tech-pill green">Decision Intelligence</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="projects-row" style="margin-top:2px;">
+    <div class="project-card reveal">
+      <div class="project-header">
+        <span class="project-badge badge-build">UX Design</span>
+        <span class="project-num">06</span>
+      </div>
+      <h3 class="project-title">ProMent — AI Mentoring App</h3>
+      <div class="project-subtitle">UX Research + Design</div>
+      <p class="project-desc">
+        Full UX research and design of a mentoring platform for entry-level PMs. User interviews, journey mapping, wireframes to high-fidelity prototype — solving the cold-start problem for aspiring product managers.
+      </p>
+      <div class="project-tech">
+        <span class="tech-pill">UX Research</span>
+        <span class="tech-pill">Figma</span>
+        <span class="tech-pill">User Interviews</span>
+        <span class="tech-pill green">Prototype → Tested</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-header">
+        <span class="project-badge badge-shipped">Shipped</span>
+        <span class="project-num">07</span>
+      </div>
+      <h3 class="project-title">Internal Knowledge Management System</h3>
+      <div class="project-subtitle">WeSure Insuretech — Org Enablement</div>
+      <p class="project-desc">
+        Initiated and led development of an internal KMS that centralized product and process documentation, cutting new hire ramp-up time by 60% and eliminating institutional knowledge silos across 10+ team members.
+      </p>
+      <div class="project-tech">
+        <span class="tech-pill">Knowledge Architecture</span>
+        <span class="tech-pill">Process Design</span>
+        <span class="tech-pill green">60% faster onboarding</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">03 / Experience</div>
+  <h2 class="section-title">Where I've <span>made impact</span>.</h2>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-meta"><span>Jun 2024 — Present</span> · Bengaluru</div>
+      <div class="timeline-role">Consultant — Product Consulting</div>
+      <div class="timeline-company">WeSure Insuretech India Private Limited</div>
+      <ul class="timeline-bullets">
+        <li>Architecting and building <strong>AI-Powered Policy Checking System</strong> — from gap identification to architecture to code.</li>
+        <li>Release process overhaul: <strong>60% efficiency gain</strong>, 80% reduction in post-release issues.</li>
+        <li>Launched internal KMS, cutting onboarding ramp-up by <strong>60%</strong>.</li>
+        <li>Automated redundant workflows: <strong>25% reduction</strong> in manual intervention.</li>
+        <li>Trained 10+ cross-functional members, driving 20% feature adoption improvement.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-meta"><span>May 2022 — May 2024</span> · Bengaluru</div>
+      <div class="timeline-role">Business Analyst — Product Consulting</div>
+      <div class="timeline-company">WeSure Insuretech India Private Limited</div>
+      <ul class="timeline-bullets">
+        <li>Delivered <strong>5+ major features annually</strong> by translating complex business needs into tight technical specs.</li>
+        <li>System integration that improved core performance by <strong>30%</strong>, cutting quote-to-bind time.</li>
+        <li>Built automated test case generator: <strong>70% faster QA</strong>, 2-week GTM acceleration.</li>
+        <li>Web traffic up <strong>15% YoY</strong> through strategic content optimization.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-meta"><span>Jul 2021 — Apr 2022</span></div>
+      <div class="timeline-role">Product Consultant / Developer</div>
+      <div class="timeline-company">Coir Industries Cluster</div>
+      <ul class="timeline-bullets">
+        <li>Built project monitoring application reducing reporting errors by <strong>40%</strong>.</li>
+        <li>Customer interview program that increased product adoption by <strong>50%</strong>.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-meta"><span>Jul 2017 — Dec 2020</span> · Bengaluru</div>
+      <div class="timeline-role">Engineer II</div>
+      <div class="timeline-company">Safran Engineering Services India PVT LTD</div>
+      <ul class="timeline-bullets">
+        <li>Principal customer focal for Safran Helicopter Engines — India &amp; France, 4 active projects.</li>
+        <li>Automation of technical manual delivery: <strong>15% faster</strong> delivery time.</li>
+        <li>Eliminated <strong>30% of process defects</strong> through mistake-proofing integration.</li>
+        <li>Resource allocation tool: <strong>80% reduction</strong> in work allocation time. Won <strong>Best Squadron (Gold)</strong>.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">04 / Skills</div>
+  <h2 class="section-title">The full <span>stack PM</span>.</h2>
+
+  <div class="skills-grid">
+    <div class="skill-panel reveal">
+      <span class="skill-icon">🧠</span>
+      <div class="skill-panel-title">AI & Automation</div>
+      <div class="skill-panel-desc">// Identifying automation opportunities and building AI-native products</div>
+      <div class="skill-list">
+        <div class="skill-row"><span>LLM Applications</span><div class="skill-bar"><div class="skill-fill" data-w="85"></div></div></div>
+        <div class="skill-row"><span>Process Automation</span><div class="skill-bar"><div class="skill-fill" data-w="92"></div></div></div>
+        <div class="skill-row"><span>AI Product Strategy</span><div class="skill-bar"><div class="skill-fill" data-w="88"></div></div></div>
+        <div class="skill-row"><span>Prompt Engineering</span><div class="skill-bar"><div class="skill-fill" data-w="80"></div></div></div>
+      </div>
+    </div>
+
+    <div class="skill-panel reveal">
+      <span class="skill-icon">📦</span>
+      <div class="skill-panel-title">Product Management</div>
+      <div class="skill-panel-desc">// Full lifecycle ownership from discovery to launch</div>
+      <div class="skill-list">
+        <div class="skill-row"><span>Roadmapping</span><div class="skill-bar"><div class="skill-fill" data-w="95"></div></div></div>
+        <div class="skill-row"><span>Feature Prioritization</span><div class="skill-bar"><div class="skill-fill" data-w="95"></div></div></div>
+        <div class="skill-row"><span>Stakeholder Mgmt</span><div class="skill-bar"><div class="skill-fill" data-w="90"></div></div></div>
+        <div class="skill-row"><span>Agile / Scrum</span><div class="skill-bar"><div class="skill-fill" data-w="92"></div></div></div>
+      </div>
+    </div>
+
+    <div class="skill-panel reveal">
+      <span class="skill-icon">💻</span>
+      <div class="skill-panel-title">Technical Skills</div>
+      <div class="skill-panel-desc">// I don't just spec it — I build it</div>
+      <div class="skill-list">
+        <div class="skill-row"><span>Python / Streamlit</span><div class="skill-bar"><div class="skill-fill" data-w="80"></div></div></div>
+        <div class="skill-row"><span>SQL</span><div class="skill-bar"><div class="skill-fill" data-w="78"></div></div></div>
+        <div class="skill-row"><span>JavaScript / HTML</span><div class="skill-bar"><div class="skill-fill" data-w="65"></div></div></div>
+        <div class="skill-row"><span>Tableau / PowerBI</span><div class="skill-bar"><div class="skill-fill" data-w="82"></div></div></div>
+      </div>
+    </div>
+
+    <div class="skill-panel reveal">
+      <span class="skill-icon">🔬</span>
+      <div class="skill-panel-title">Research & Analytics</div>
+      <div class="skill-panel-desc">// Data-driven decisions, always</div>
+      <div class="skill-list">
+        <div class="skill-row"><span>Market Research</span><div class="skill-bar"><div class="skill-fill" data-w="90"></div></div></div>
+        <div class="skill-row"><span>Quant Analysis</span><div class="skill-bar"><div class="skill-fill" data-w="85"></div></div></div>
+        <div class="skill-row"><span>A/B Testing</span><div class="skill-bar"><div class="skill-fill" data-w="75"></div></div></div>
+        <div class="skill-row"><span>User Interviews</span><div class="skill-bar"><div class="skill-fill" data-w="88"></div></div></div>
+      </div>
+    </div>
+
+    <div class="skill-panel reveal">
+      <span class="skill-icon">🎨</span>
+      <div class="skill-panel-title">UX & Design</div>
+      <div class="skill-panel-desc">// User-centric from problem to pixel</div>
+      <div class="skill-list">
+        <div class="skill-row"><span>UX Research</span><div class="skill-bar"><div class="skill-fill" data-w="85"></div></div></div>
+        <div class="skill-row"><span>Figma / Adobe XD</span><div class="skill-bar"><div class="skill-fill" data-w="82"></div></div></div>
+        <div class="skill-row"><span>Design Thinking</span><div class="skill-bar"><div class="skill-fill" data-w="90"></div></div></div>
+        <div class="skill-row"><span>Prototyping</span><div class="skill-bar"><div class="skill-fill" data-w="80"></div></div></div>
+      </div>
+    </div>
+
+    <div class="skill-panel reveal">
+      <span class="skill-icon">⚙️</span>
+      <div class="skill-panel-title">Process & Quality</div>
+      <div class="skill-panel-desc">// Operational excellence as a superpower</div>
+      <div class="skill-list">
+        <div class="skill-row"><span>Lean Six Sigma</span><div class="skill-bar"><div class="skill-fill" data-w="85"></div></div></div>
+        <div class="skill-row"><span>A3 Thinking</span><div class="skill-bar"><div class="skill-fill" data-w="88"></div></div></div>
+        <div class="skill-row"><span>Release Mgmt</span><div class="skill-bar"><div class="skill-fill" data-w="92"></div></div></div>
+        <div class="skill-row"><span>Documentation</span><div class="skill-bar"><div class="skill-fill" data-w="95"></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tools-section reveal">
+    <div class="tools-row">
+      <div class="tools-row-label">Analytics & Data</div>
+      <div class="tools-items">
+        <span class="tool-chip">Excel + Macros</span><span class="tool-chip">Tableau</span><span class="tool-chip">PowerBI</span><span class="tool-chip">Python</span><span class="tool-chip">Google Analytics</span><span class="tool-chip">Google Sheets</span>
+      </div>
+    </div>
+    <div class="tools-row">
+      <div class="tools-row-label">Product & PM</div>
+      <div class="tools-items">
+        <span class="tool-chip">Jira</span><span class="tool-chip">Monday</span><span class="tool-chip">Aha!</span><span class="tool-chip">Trello</span><span class="tool-chip">ProductBoard</span><span class="tool-chip">Notion</span><span class="tool-chip">Miro</span>
+      </div>
+    </div>
+    <div class="tools-row">
+      <div class="tools-row-label">Design & Creative</div>
+      <div class="tools-items">
+        <span class="tool-chip">Figma</span><span class="tool-chip">Adobe XD</span><span class="tool-chip">Dojoit</span><span class="tool-chip">WordPress</span><span class="tool-chip">PowerPoint</span>
+      </div>
+    </div>
+    <div class="tools-row">
+      <div class="tools-row-label">Languages</div>
+      <div class="tools-items">
+        <span class="tool-chip">Python</span><span class="tool-chip">SQL</span><span class="tool-chip">JavaScript</span><span class="tool-chip">HTML/CSS</span><span class="tool-chip">JSON</span><span class="tool-chip">PowerShell</span><span class="tool-chip">C++</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-label">05 / Credentials</div>
+  <h2 class="section-title">Certified to <span>know my craft</span>.</h2>
+
+  <div class="certs-grid">
+    <div class="cert-card reveal"><div class="cert-org">Pendo</div><div class="cert-name">AI for Product Management</div></div>
+    <div class="cert-card reveal"><div class="cert-org">Pendo</div><div class="cert-name">Artificial Intelligence Micro-Certification (AIC)</div></div>
+    <div class="cert-card reveal"><div class="cert-org">Pendo</div><div class="cert-name">Product Discovery (PDC)</div></div>
+    <div class="cert-card reveal"><div class="cert-org">Pendo</div><div class="cert-name">Product Strategy (PSC)</div></div>
+    <div class="cert-card reveal"><div class="cert-org">Pendo</div><div class="cert-name">Product Launches (PRLC)</div></div>
+    <div class="cert-card reveal"><div class="cert-org">Pendo</div><div class="cert-name">Product Roadmapping (PRC)</div></div>
+    <div class="cert-card reveal"><div class="cert-org">Google / Wiley</div><div class="cert-name">Generative AI Fundamentals</div></div>
+    <div class="cert-card reveal"><div class="cert-org">Wiley</div><div class="cert-name">Certified Python Programmer</div></div>
+    <div class="cert-card reveal"><div class="cert-org">Wiley</div><div class="cert-name">Certified Design Thinking Practitioner</div></div>
+    <div class="cert-card reveal"><div class="cert-org">Lean Institute</div><div class="cert-name">Lean Six Sigma Green Belt</div></div>
+    <div class="cert-card reveal"><div class="cert-org">Radical Product</div><div class="cert-name">Radical Product Thinking: Vision Setting</div></div>
+    <div class="cert-card reveal"><div class="cert-org">WalkMe</div><div class="cert-name">Digital Adoption Certification</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label" style="justify-content:center;">06 / Contact</div>
+  <h2 class="section-title" style="text-align:center;">Let's build <span>something that matters</span>.</h2>
+  <p class="contact-tagline">
+    If you're building AI products, automating broken systems, or looking for a PM who can talk tech and ship it — let's talk.
+  </p>
+  <div class="contact-links">
+    <a href="mailto:harrydavidson4@hotmail.com" class="contact-link">
+      <span>✉</span> harrydavidson4@hotmail.com
+    </a>
+    <a href="https://linkedin.com/in/harrisun-raj-mohan/" target="_blank" class="contact-link">
+      <span>↗</span> LinkedIn
+    </a>
+    <a href="https://bit.ly/Harrisun-Raj-Mohan" target="_blank" class="contact-link">
+      <span>⬡</span> Portfolio (Full)
+    </a>
+    <a href="tel:+919087108743" class="contact-link">
+      <span>◎</span> +91 9087108743
+    </a>
+  </div>
+  <div class="footer-sig">
+    // Harrisun Raj Mohan — AI Product Manager — Bengaluru, India — 2025
+  </div>
+</section>
+
+<script>
+// CUSTOM CURSOR
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate(${mx - 4}px, ${my - 4}px)`;
+});
+
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.transform = `translate(${rx - 16}px, ${ry - 16}px)`;
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+document.querySelectorAll('a, button, .tag, .tool-chip, .cert-card').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+});
+
+// NEURAL NETWORK CANVAS
+const canvas = document.getElementById('neural-canvas');
+const ctx = canvas.getContext('2d');
+let nodes = [];
+const NUM_NODES = 60;
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+for (let i = 0; i < NUM_NODES; i++) {
+  nodes.push({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    vx: (Math.random() - 0.5) * 0.3,
+    vy: (Math.random() - 0.5) * 0.3,
+    r: Math.random() * 2 + 1,
+  });
+}
+
+function drawNeural() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  nodes.forEach(n => {
+    n.x += n.vx; n.y += n.vy;
+    if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
+    if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
+  });
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const dx = nodes[i].x - nodes[j].x;
+      const dy = nodes[i].y - nodes[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 150) {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(0,212,255,${0.15 * (1 - dist / 150)})`;
+        ctx.lineWidth = 0.5;
+        ctx.moveTo(nodes[i].x, nodes[i].y);
+        ctx.lineTo(nodes[j].x, nodes[j].y);
+        ctx.stroke();
+      }
+    }
+    ctx.beginPath();
+    ctx.arc(nodes[i].x, nodes[i].y, nodes[i].r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,212,255,0.4)';
+    ctx.fill();
+  }
+  requestAnimationFrame(drawNeural);
+}
+drawNeural();
+
+// COUNTER ANIMATION
+function animateCounters() {
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const target = parseInt(el.dataset.count);
+    let current = 0;
+    const step = target / 60;
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.textContent = Math.round(current) + '%';
+      if (current >= target) clearInterval(timer);
+    }, 16);
+  });
+}
+setTimeout(animateCounters, 1200);
+
+// SCROLL REVEAL
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      // Animate skill bars
+      entry.target.querySelectorAll('.skill-fill').forEach(bar => {
+        bar.style.width = bar.dataset.w + '%';
+      });
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal, .timeline-item').forEach(el => observer.observe(el));
+
+// STATUS BAR TIME
+function updateTime() {
+  const now = new Date();
+  const ist = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+  const h = String(ist.getHours()).padStart(2,'0');
+  const m = String(ist.getMinutes()).padStart(2,'0');
+  const s = String(ist.getSeconds()).padStart(2,'0');
+  document.getElementById('time-display').textContent = `// IST ${h}:${m}:${s}`;
+}
+updateTime();
+setInterval(updateTime, 1000);
+</script>
+</body>
+</html>

@@ -932,21 +932,322 @@ section {
   color: var(--accent);
 }
 
-/* MOBILE */
-@media (max-width: 768px) {
-  nav { padding: 16px 20px; }
-  .nav-links { display: none; }
-  section { padding: 60px 20px; }
-  #hero { padding: 100px 20px 60px; }
-  .hero-metrics { flex-wrap: wrap; gap: 24px; }
-  .about-grid { grid-template-columns: 1fr; gap: 40px; }
-  .skills-grid { grid-template-columns: 1fr; }
-  .certs-grid { grid-template-columns: repeat(2,1fr); }
-  .projects-row { grid-template-columns: 1fr; }
-  .divider { margin: 0 20px; }
-  .hero-scroll { display: none; }
+/* ============================================================
+   RESPONSIVE SYSTEM — All Breakpoints
+   xs:     < 480px   (small phones)
+   sm:  480–767px   (phones landscape / large phones)
+   md:  768–1023px  (tablets portrait & landscape)
+   lg: 1024–1279px  (small laptops)
+   xl: 1280–1535px  (desktops) — base styles above
+   2xl:   ≥1536px   (large monitors)
+   ============================================================ */
+
+/* ── 2XL: Large monitors ≥1536px ── */
+@media (min-width: 1536px) {
+  nav { padding: 24px 80px; }
+  section { padding: 120px 80px; }
+  #hero { padding: 120px 80px 80px; }
+  .divider { margin: 0 80px; }
+  .hero-name { font-size: 112px; }
+  .skills-grid { grid-template-columns: repeat(3, 1fr); }
+  .certs-grid { grid-template-columns: repeat(4, 1fr); }
+  .about-grid { gap: 100px; }
+  .project-card { padding: 56px; }
+}
+
+/* ── LG: Small laptops 1024–1279px ── */
+@media (max-width: 1279px) {
+  nav { padding: 20px 40px; }
+  section { padding: 80px 40px; }
+  #hero { padding: 100px 40px 60px; }
+  .divider { margin: 0 40px; }
+  .hero-scroll { right: 40px; }
+  .about-grid { gap: 48px; }
+  .skills-grid { grid-template-columns: repeat(3, 1fr); }
+  .certs-grid { grid-template-columns: repeat(4, 1fr); }
+  .project-card { padding: 36px; }
+  .hero-metrics { gap: 36px; }
+}
+
+/* ── MD: Tablets 768–1023px ── */
+@media (max-width: 1023px) {
+  /* Nav */
+  nav { padding: 16px 32px; }
+  .nav-links { gap: 24px; }
+  .nav-links a { font-size: 11px; }
+  .nav-cta { padding: 7px 16px; font-size: 11px; }
+
+  /* Layout */
+  section { padding: 72px 32px; }
+  #hero { padding: 100px 32px 60px; }
+  .divider { margin: 0 32px; }
+  .hero-scroll { right: 32px; }
+
+  /* Hero */
+  .hero-name { font-size: clamp(44px, 7vw, 72px); }
+  .hero-metrics { gap: 28px; }
+  .metric-val { font-size: 28px; }
+
+  /* About */
+  .about-grid { grid-template-columns: 1fr; gap: 48px; }
+
+  /* Projects */
+  .projects-row { grid-template-columns: 1fr 1fr; }
+  .project-card { padding: 32px; }
+  .project-impact { flex-wrap: wrap; gap: 20px; }
+
+  /* Skills */
+  .skills-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* Certs */
+  .certs-grid { grid-template-columns: repeat(3, 1fr); }
+
+  /* Tools */
+  .tools-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .tools-row-label { width: auto; }
+
+  /* Status bar */
+  .status-bar { gap: 16px; padding: 0 16px; }
+  .status-item:nth-child(3),
+  .status-item:nth-child(4) { display: none; }
+}
+
+/* ── SM: Large phones / landscape 480–767px ── */
+@media (max-width: 767px) {
+  /* Cursor off on touch */
   body { cursor: auto; }
   .cursor, .cursor-ring { display: none; }
+
+  /* Nav — hamburger-style (hide links, keep logo + CTA) */
+  nav { padding: 14px 20px; }
+  .nav-links { display: none; }
+  .nav-cta { padding: 8px 14px; font-size: 11px; }
+
+  /* Layout */
+  section { padding: 60px 20px; }
+  #hero { padding: 90px 20px 60px; min-height: 100svh; }
+  .divider { margin: 0 20px; }
+  .hero-scroll { display: none; }
+
+  /* Hero */
+  .hero-tag { font-size: 11px; }
+  .hero-name { font-size: clamp(40px, 10vw, 56px); line-height: 1; }
+  .hero-title { font-size: 13px; }
+  .hero-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .metric-val { font-size: 22px; }
+  .metric-label { font-size: 9px; }
+  .hero-actions { flex-direction: column; gap: 12px; }
+  .btn-primary, .btn-secondary { text-align: center; padding: 13px 24px; font-size: 12px; }
+
+  /* Section titles */
+  .section-title { font-size: clamp(24px, 6vw, 36px); margin-bottom: 40px; }
+
+  /* About */
+  .about-grid { grid-template-columns: 1fr; gap: 36px; }
+  .about-text p { font-size: 15px; }
+
+  /* Projects */
+  .projects-row { grid-template-columns: 1fr; gap: 2px; }
+  .project-card { padding: 24px; }
+  .project-title { font-size: 20px; }
+  .project-impact { flex-wrap: wrap; gap: 16px; }
+  .impact-val { font-size: 18px; }
+
+  /* Skills */
+  .skills-grid { grid-template-columns: 1fr 1fr; gap: 2px; }
+  .skill-panel { padding: 20px; }
+  .skill-icon { font-size: 22px; margin-bottom: 10px; }
+  .skill-panel-title { font-size: 14px; }
+  .skill-bar { width: 60px; }
+
+  /* Certs */
+  .certs-grid { grid-template-columns: repeat(2, 1fr); gap: 2px; }
+  .cert-card { padding: 16px; }
+  .cert-name { font-size: 12px; }
+
+  /* Timeline */
+  .timeline { padding-left: 28px; }
+  .timeline-item::before { left: -32px; }
+  .timeline-role { font-size: 17px; }
+
+  /* Contact */
+  .contact-links { flex-direction: column; align-items: center; }
+  .contact-link { width: 100%; max-width: 320px; justify-content: center; font-size: 11px; padding: 11px 16px; }
+
+  /* Status bar */
+  .status-bar { gap: 12px; padding: 0 12px; }
+  .status-item:nth-child(2),
+  .status-item:nth-child(3),
+  .status-item:nth-child(4) { display: none; }
+  .status-item:first-child span { font-size: 9px; }
+
+  /* Tools */
+  .tools-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .tools-row-label { width: auto; font-size: 9px; }
+}
+
+/* ── HAMBURGER ── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 1100;
+}
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  background: var(--accent);
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* ── MOBILE MENU OVERLAY ── */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(2,5,8,0.97);
+  backdrop-filter: blur(20px);
+  z-index: 1050;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.mobile-menu.open {
+  opacity: 1;
+  pointer-events: all;
+}
+.mobile-close {
+  position: absolute;
+  top: 20px; right: 20px;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-family: 'Fira Code', monospace;
+  font-size: 16px;
+  width: 40px; height: 40px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.mobile-close:hover { border-color: var(--accent); color: var(--accent); }
+.mobile-link {
+  font-family: 'Fira Code', monospace;
+  font-size: 22px;
+  color: var(--text-dim);
+  text-decoration: none;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 12px 0;
+  transition: color 0.2s;
+  border-bottom: 1px solid transparent;
+}
+.mobile-link:hover { color: var(--accent); border-bottom-color: var(--border); }
+.mobile-cta {
+  margin-top: 24px;
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  color: var(--accent);
+  border: 1px solid var(--border-bright);
+  padding: 14px 40px;
+  text-decoration: none;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+.mobile-cta:hover { background: rgba(0,212,255,0.1); box-shadow: var(--glow); }
+
+@media (max-width: 767px) {
+  .hamburger { display: flex; }
+  .mobile-menu { display: flex; }
+}
+
+/* ── XS: Small phones < 480px ── */
+@media (max-width: 479px) {
+  /* Nav */
+  nav { padding: 12px 16px; }
+  .nav-logo { font-size: 11px; }
+  .nav-cta { display: none; }
+
+  /* Layout */
+  section { padding: 48px 16px; }
+  #hero { padding: 80px 16px 48px; }
+  .divider { margin: 0 16px; }
+
+  /* Hero */
+  .hero-tag { font-size: 10px; gap: 8px; }
+  .hero-tag::before { width: 24px; }
+  .hero-name { font-size: clamp(36px, 11vw, 48px); }
+  .hero-title { font-size: 12px; }
+  .hero-metrics {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .metric-val { font-size: 20px; }
+  .metric-label { font-size: 8px; letter-spacing: 0; }
+
+  /* Section titles */
+  .section-title { font-size: clamp(22px, 7vw, 30px); margin-bottom: 32px; }
+  .section-label { font-size: 10px; }
+
+  /* Projects */
+  .project-card { padding: 20px; }
+  .project-title { font-size: 18px; }
+  .project-subtitle { font-size: 11px; }
+  .project-desc { font-size: 13px; }
+  .project-impact { gap: 12px; }
+  .impact-val { font-size: 16px; }
+  .impact-label { font-size: 9px; }
+
+  /* Skills */
+  .skills-grid { grid-template-columns: 1fr; }
+  .skill-panel { padding: 18px; }
+
+  /* Certs */
+  .certs-grid { grid-template-columns: 1fr 1fr; }
+  .cert-card { padding: 14px; }
+  .cert-name { font-size: 11px; }
+  .cert-org { font-size: 9px; }
+
+  /* Timeline */
+  .timeline { padding-left: 24px; }
+  .timeline::before { left: 0; }
+  .timeline-item::before { left: -28px; width: 6px; height: 6px; }
+  .timeline-role { font-size: 16px; }
+  .timeline-company { font-size: 12px; }
+  .timeline-bullets li { font-size: 13px; }
+  .timeline-item { margin-bottom: 40px; }
+
+  /* About */
+  .about-text p { font-size: 14px; }
+
+  /* Contact */
+  .contact-tagline { font-size: 12px; }
+  .contact-link { font-size: 10px; padding: 10px 14px; }
+  .footer-sig { font-size: 9px; letter-spacing: 1px; }
+
+  /* Tag clouds */
+  .tag { font-size: 10px; padding: 5px 10px; }
+
+  /* Tool rows */
+  .tool-chip { font-size: 10px; padding: 3px 8px; }
 }
 </style>
 </head>
@@ -980,7 +1281,22 @@ section {
     <li><a href="#contact">Contact</a></li>
   </ul>
   <a href="mailto:harrydavidson4@hotmail.com" class="nav-cta">Let's Talk →</a>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU OVERLAY -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">✕</button>
+  <a href="#about" class="mobile-link">01 // About</a>
+  <a href="#ai-projects" class="mobile-link">02 // AI Projects</a>
+  <a href="#experience" class="mobile-link">03 // Experience</a>
+  <a href="#skills" class="mobile-link">04 // Skills</a>
+  <a href="#certifications" class="mobile-link">05 // Certifications</a>
+  <a href="#contact" class="mobile-link">06 // Contact</a>
+  <a href="mailto:harrydavidson4@hotmail.com" class="mobile-cta">✉ Let's Talk</a>
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -1444,8 +1760,8 @@ section {
     If you're building AI products, automating broken systems, or looking for a PM who can talk tech and ship it — let's talk.
   </p>
   <div class="contact-links">
-    <a href="mailto:harrydavidson4@hotmail.com" class="contact-link">
-      <span>✉</span> harrydavidson4@hotmail.com
+    <a href="/cdn-cgi/l/email-protection#bfd7decdcdc6dbdec9d6dbccd0d18bffd7d0cbd2ded6d391dcd0d2" class="contact-link">
+      <span>✉</span> <span class="__cf_email__" data-cfemail="ed858c9f9f94898c9b84899e8283d9ad858299808c8481c38e8280">[email&#160;protected]</span>
     </a>
     <a href="https://linkedin.com/in/harrisun-raj-mohan/" target="_blank" class="contact-link">
       <span>↗</span> LinkedIn
@@ -1462,7 +1778,7 @@ section {
   </div>
 </section>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // CUSTOM CURSOR
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursorRing');
@@ -1569,17 +1885,32 @@ const observer = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.reveal, .timeline-item').forEach(el => observer.observe(el));
 
-// STATUS BAR TIME
+// HAMBURGER MENU
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+const mobileClose = document.getElementById('mobileClose');
+
+function openMenu() {
+  hamburger.classList.add('open');
+  mobileMenu.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMenu() {
+  hamburger.classList.remove('open');
+  mobileMenu.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+hamburger.addEventListener('click', () => {
+  mobileMenu.classList.contains('open') ? closeMenu() : openMenu();
+});
+mobileClose.addEventListener('click', closeMenu);
+
+document.querySelectorAll('.mobile-link, .mobile-cta').forEach(link => {
+  link.addEventListener('click', closeMenu);
+});
+
 function updateTime() {
   const now = new Date();
   const ist = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
-  const h = String(ist.getHours()).padStart(2,'0');
-  const m = String(ist.getMinutes()).padStart(2,'0');
-  const s = String(ist.getSeconds()).padStart(2,'0');
-  document.getElementById('time-display').textContent = `// IST ${h}:${m}:${s}`;
-}
-updateTime();
-setInterval(updateTime, 1000);
-</script>
-</body>
-</html>
+  const 

@@ -102,7 +102,7 @@ a:focus-visible, button:focus-visible { outline: 1.5px solid var(--accent); outl
 /* GRID BACKGROUND */
 .grid-bg {
   position: fixed;
-  inset: 0;
+  top: 0; right: 0; bottom: 0; left: 0;
   background-image:
     linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
@@ -114,7 +114,7 @@ a:focus-visible, button:focus-visible { outline: 1.5px solid var(--accent); outl
 /* NOISE OVERLAY */
 .noise {
   position: fixed;
-  inset: 0;
+  top: 0; right: 0; bottom: 0; left: 0;
   opacity: 0.025;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   pointer-events: none;
@@ -124,7 +124,7 @@ a:focus-visible, button:focus-visible { outline: 1.5px solid var(--accent); outl
 /* NEURAL CANVAS */
 #neural-canvas {
   position: fixed;
-  inset: 0;
+  top: 0; right: 0; bottom: 0; left: 0;
   pointer-events: none;
   z-index: 0;
   opacity: 0.4;
@@ -136,12 +136,17 @@ nav {
   top: 0; left: 0; right: 0;
   z-index: 1000;
   padding: 20px 60px;
+  display: -webkit-flex;
   display: flex;
+  -webkit-align-items: center;
   align-items: center;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
   background: linear-gradient(180deg, rgba(2,5,8,0.9) 0%, transparent 100%);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(0,212,255,0.05);
+  transition: padding 0.3s ease, background 0.3s ease;
 }
 
 .nav-logo {
@@ -212,7 +217,10 @@ nav.scrolled {
 /* HERO */
 #hero {
   min-height: 100vh;
+  min-height: 100svh;
+  display: -webkit-flex;
   display: flex;
+  -webkit-align-items: center;
   align-items: center;
   position: relative;
   padding: 100px 60px 80px;
@@ -260,6 +268,7 @@ body { padding-bottom: 28px; }
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  color: transparent;
 }
 
 .hero-title {
@@ -412,6 +421,7 @@ section {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  color: transparent;
 }
 
 /* ABOUT */
@@ -1256,23 +1266,34 @@ section {
 
 /* ── MOBILE MENU OVERLAY ── */
 .mobile-menu {
-  display: none;
   position: fixed;
-  inset: 0;
+  top: 0; right: 0; bottom: 0; left: 0;
   background: rgba(2,5,8,0.97);
+  -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
   z-index: 1050;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
   flex-direction: column;
+  -webkit-align-items: center;
   align-items: center;
+  -webkit-justify-content: center;
   justify-content: center;
   gap: 8px;
+  /* Hidden state */
+  visibility: hidden;
   opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
+  -webkit-transform: translateY(-8px);
+  transform: translateY(-8px);
+  -webkit-transition: opacity 0.3s ease, visibility 0.3s ease, -webkit-transform 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
 }
 .mobile-menu.open {
+  visibility: visible;
   opacity: 1;
-  pointer-events: all;
+  -webkit-transform: translateY(0);
+  transform: translateY(0);
 }
 .mobile-close {
   position: absolute;
@@ -1314,8 +1335,7 @@ section {
 .mobile-cta:hover { background: rgba(0,212,255,0.1); box-shadow: var(--glow); }
 
 @media (max-width: 767px) {
-  .hamburger { display: flex; }
-  .mobile-menu { display: flex; }
+  .hamburger { display: -webkit-flex; display: flex; }
 }
 
 /* ── XS: Small phones < 480px ── */
@@ -1420,21 +1440,21 @@ section {
     <li><a href="#contact">Contact</a></li>
   </ul>
   <a href="/cdn-cgi/l/email-protection#5c343d2e2e25383d2a35382f3332681c343328313d3530723f3331" class="nav-cta">Let's Talk →</a>
-  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+  <button class="hamburger" id="hamburger" type="button" aria-label="Toggle menu">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
 <!-- MOBILE MENU OVERLAY -->
 <div class="mobile-menu" id="mobileMenu">
-  <button class="mobile-close" id="mobileClose">✕</button>
+  <button class="mobile-close" id="mobileClose" type="button">✕</button>
   <a href="#about" class="mobile-link">01 // About</a>
   <a href="#ai-projects" class="mobile-link">02 // AI Projects</a>
   <a href="#experience" class="mobile-link">03 // Experience</a>
   <a href="#skills" class="mobile-link">04 // Skills</a>
   <a href="#certifications" class="mobile-link">05 // Certifications</a>
   <a href="#contact" class="mobile-link">06 // Contact</a>
-  <a href="/cdn-cgi/l/email-protection#4129203333382520372825322e2f7501292e352c20282d6f222e2c" class="mobile-cta">✉ Let's Talk</a>
+  <a href="mailto:harrydavidson4@hotmail.com" class="mobile-cta">✉ Let's Talk</a>
 </div>
 
 <!-- HERO -->
@@ -1923,22 +1943,22 @@ const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursorRing');
 let mx = 0, my = 0, rx = 0, ry = 0;
 
-document.addEventListener('mousemove', e => {
+document.addEventListener('mousemove', function(e) {
   mx = e.clientX; my = e.clientY;
-  cursor.style.transform = `translate(${mx - 4}px, ${my - 4}px)`;
+  cursor.style.transform = 'translate(' + (mx - 4) + 'px, ' + (my - 4) + 'px)';
 });
 
 function animateRing() {
   rx += (mx - rx) * 0.12;
   ry += (my - ry) * 0.12;
-  ring.style.transform = `translate(${rx - 16}px, ${ry - 16}px)`;
+  ring.style.transform = 'translate(' + (rx - 16) + 'px, ' + (ry - 16) + 'px)';
   requestAnimationFrame(animateRing);
 }
 animateRing();
 
-document.querySelectorAll('a, button, .tag, .tool-chip, .cert-card').forEach(el => {
-  el.addEventListener('mouseenter', () => ring.classList.add('hover'));
-  el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+document.querySelectorAll('a, button, .tag, .tool-chip, .cert-card').forEach(function(el) {
+  el.addEventListener('mouseenter', function() { ring.classList.add('hover'); });
+  el.addEventListener('mouseleave', function() { ring.classList.remove('hover'); });
 });
 
 // NEURAL NETWORK CANVAS
@@ -1951,22 +1971,27 @@ function resize() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 }
-resize();
-window.addEventListener('resize', resize);
 
-for (let i = 0; i < NUM_NODES; i++) {
-  nodes.push({
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    vx: (Math.random() - 0.5) * 0.3,
-    vy: (Math.random() - 0.5) * 0.3,
-    r: Math.random() * 2 + 1,
-  });
-}
+// Defer resize until after layout to avoid 0-width on Safari
+window.addEventListener('load', function() {
+  resize();
+  for (let i = 0; i < NUM_NODES; i++) {
+    nodes.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      r: Math.random() * 2 + 1,
+    });
+  }
+  drawNeural();
+});
+
+window.addEventListener('resize', resize);
 
 function drawNeural() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  nodes.forEach(n => {
+  nodes.forEach(function(n) {
     n.x += n.vx; n.y += n.vy;
     if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
     if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
@@ -1978,7 +2003,7 @@ function drawNeural() {
       const dist = Math.sqrt(dx * dx + dy * dy);
       if (dist < 150) {
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(0,212,255,${0.15 * (1 - dist / 150)})`;
+        ctx.strokeStyle = 'rgba(0,212,255,' + (0.15 * (1 - dist / 150)) + ')';
         ctx.lineWidth = 0.5;
         ctx.moveTo(nodes[i].x, nodes[i].y);
         ctx.lineTo(nodes[j].x, nodes[j].y);
@@ -1992,15 +2017,14 @@ function drawNeural() {
   }
   requestAnimationFrame(drawNeural);
 }
-drawNeural();
 
 // COUNTER ANIMATION
 function animateCounters() {
-  document.querySelectorAll('[data-count]').forEach(el => {
-    const target = parseInt(el.dataset.count);
-    let current = 0;
-    const step = target / 60;
-    const timer = setInterval(() => {
+  document.querySelectorAll('[data-count]').forEach(function(el) {
+    var target = parseInt(el.dataset.count);
+    var current = 0;
+    var step = target / 60;
+    var timer = setInterval(function() {
       current = Math.min(current + step, target);
       el.textContent = Math.round(current) + '%';
       if (current >= target) clearInterval(timer);
@@ -2010,61 +2034,92 @@ function animateCounters() {
 setTimeout(animateCounters, 1200);
 
 // SCROLL REVEAL
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
     if (entry.isIntersecting) {
       entry.target.classList.add('visible');
-      // Animate skill bars
-      entry.target.querySelectorAll('.skill-fill').forEach(bar => {
+      entry.target.querySelectorAll('.skill-fill').forEach(function(bar) {
         bar.style.width = bar.dataset.w + '%';
       });
     }
   });
 }, { threshold: 0.1 });
 
-document.querySelectorAll('.reveal, .timeline-item').forEach(el => observer.observe(el));
+document.querySelectorAll('.reveal, .timeline-item').forEach(function(el) {
+  observer.observe(el);
+});
 
 // NAV SCROLL SHRINK + ACTIVE SECTION HIGHLIGHT
-const nav = document.querySelector('nav');
-const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.nav-links a');
+var navEl = document.querySelector('nav');
+var sections = document.querySelectorAll('section[id]');
+var navLinks = document.querySelectorAll('.nav-links a');
 
-window.addEventListener('scroll', () => {
-  // Shrink nav on scroll
-  if (window.scrollY > 60) nav.classList.add('scrolled');
-  else nav.classList.remove('scrolled');
+window.addEventListener('scroll', function() {
+  if (window.scrollY > 60) navEl.classList.add('scrolled');
+  else navEl.classList.remove('scrolled');
 
-  // Active nav link
-  let current = '';
-  sections.forEach(sec => {
-    const top = sec.offsetTop - 100;
+  var current = '';
+  sections.forEach(function(sec) {
+    var top = sec.offsetTop - 100;
     if (window.scrollY >= top) current = sec.id;
   });
-  navLinks.forEach(link => {
+  navLinks.forEach(function(link) {
     link.classList.remove('active');
     if (link.getAttribute('href') === '#' + current) link.classList.add('active');
   });
 }, { passive: true });
 
 // HAMBURGER MENU
-const hamburger = document.getElementById('hamburger');
-const mobileMenu = document.getElementById('mobileMenu');
-const mobileClose = document.getElementById('mobileClose');
+var hamburger = document.getElementById('hamburger');
+var mobileMenu = document.getElementById('mobileMenu');
+var mobileClose = document.getElementById('mobileClose');
 
 function openMenu() {
   hamburger.classList.add('open');
   mobileMenu.classList.add('open');
   document.body.style.overflow = 'hidden';
+  document.body.style.position = 'fixed';
+  document.body.style.width = '100%';
 }
 function closeMenu() {
   hamburger.classList.remove('open');
   mobileMenu.classList.remove('open');
   document.body.style.overflow = '';
+  document.body.style.position = '';
+  document.body.style.width = '';
+}
+function toggleMenu(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  mobileMenu.classList.contains('open') ? closeMenu() : openMenu();
+}
+function handleClose(e) {
+  e.preventDefault();
+  closeMenu();
 }
 
-hamburger.addEventListener('click', () => {
-  mobileMenu.classList.contains('open') ? closeMenu() : openMenu();
-});
-mobileClose.addEventListener('click', closeMenu);
+hamburger.addEventListener('touchend', toggleMenu, { passive: false });
+hamburger.addEventListener('click', toggleMenu);
+mobileClose.addEventListener('touchend', handleClose, { passive: false });
+mobileClose.addEventListener('click', handleClose);
 
-document.querySelectorAll('.mobile-link, .mobile-cta').for
+document.querySelectorAll('.mobile-link, .mobile-cta').forEach(function(link) {
+  link.addEventListener('touchend', closeMenu);
+  link.addEventListener('click', closeMenu);
+});
+
+// STATUS BAR TIME
+function updateTime() {
+  var now = new Date();
+  var ist = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+  var h = String(ist.getHours()).padStart(2, '0');
+  var m = String(ist.getMinutes()).padStart(2, '0');
+  var s = String(ist.getSeconds()).padStart(2, '0');
+  var el = document.getElementById('time-display');
+  if (el) el.textContent = '// IST ' + h + ':' + m + ':' + s;
+}
+updateTime();
+setInterval(updateTime, 1000);
+</script>
+</body>
+</html>

@@ -27,6 +27,12 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* Base element resets */
+img, svg { display: block; max-width: 100%; }
+button { font-family: inherit; border: none; background: none; cursor: pointer; }
+a { color: inherit; }
+ul, ol { list-style: none; }
+
 html { scroll-behavior: smooth; }
 
 body {
@@ -60,6 +66,38 @@ body {
   transition: transform 0.15s ease, width 0.2s, height 0.2s, border-color 0.2s;
 }
 .cursor-ring.hover { width: 48px; height: 48px; border-color: var(--accent2); }
+
+/* ── SCROLL MARGIN: prevents nav from hiding section headings on anchor jump ── */
+section[id] { scroll-margin-top: 72px; }
+
+/* ── SELECTION STYLE ── */
+::selection { background: rgba(0,212,255,0.25); color: var(--text); }
+::-moz-selection { background: rgba(0,212,255,0.25); color: var(--text); }
+
+/* ── FOCUS VISIBLE: keyboard navigation ── */
+:focus-visible {
+  outline: 1.5px solid var(--accent);
+  outline-offset: 3px;
+}
+a:focus-visible, button:focus-visible { outline: 1.5px solid var(--accent); outline-offset: 3px; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ── REDUCED MOTION: respect OS accessibility setting ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+  .cursor, .cursor-ring { display: none !important; }
+  body { cursor: auto !important; }
+}
 
 /* GRID BACKGROUND */
 .grid-bg {
@@ -158,15 +196,31 @@ nav {
   box-shadow: var(--glow);
 }
 
+/* Nav shrinks on scroll */
+nav.scrolled {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background: rgba(2,5,8,0.97);
+  border-bottom-color: var(--border);
+  transition: padding 0.3s ease, background 0.3s ease;
+}
+
+/* Active nav link */
+.nav-links a.active { color: var(--accent); }
+.nav-links a.active::after { transform: scaleX(1); }
+
 /* HERO */
 #hero {
   min-height: 100vh;
   display: flex;
   align-items: center;
   position: relative;
-  padding: 100px 60px 60px;
+  padding: 100px 60px 80px;
   z-index: 10;
 }
+
+/* Account for fixed status bar at bottom */
+body { padding-bottom: 28px; }
 
 .hero-content {
   max-width: 900px;
@@ -787,7 +841,92 @@ section {
   text-transform: uppercase;
 }
 
-/* ANIMATIONS */
+/* About terminal block */
+.about-terminal {
+  margin-top: 32px;
+  padding: 20px;
+  background: rgba(0,212,255,0.03);
+  border-left: 2px solid var(--accent);
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.8;
+}
+.about-terminal .term-comment { color: var(--text-dimmer); margin-bottom: 8px; }
+.about-terminal .term-active { color: var(--accent2); }
+.about-terminal .term-inactive { color: var(--text-dim); }
+
+/* Project desc - remove max-width constraint inside cards so it fills properly */
+.projects-row .project-desc,
+.project-card .project-desc { max-width: 100%; }
+
+/* Section label center variant */
+.section-label.center { justify-content: center; }
+.section-label.center::before { display: none; }
+
+/* Divider responsive */
+.divider { position: relative; z-index: 10; }
+
+/* Contact section bottom padding to clear status bar */
+#contact { padding-bottom: 60px; }
+
+/* Timeline last item no margin */
+.timeline-item:last-child { margin-bottom: 0; }
+
+/* Skill bar container — ensure it never shrinks to zero */
+.skill-row { gap: 8px; }
+.skill-row span { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.skill-bar { flex-shrink: 0; }
+
+/* Certifications section anchor fix */
+#certifications { scroll-margin-top: 72px; }
+
+/* Footer signature spacing */
+.footer-sig { padding-bottom: 8px; }
+
+/* Mobile menu border grid effect */
+.mobile-menu::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+/* Mobile menu link stagger animation */
+.mobile-menu.open .mobile-link,
+.mobile-menu.open .mobile-cta {
+  animation: fadeUp 0.4s ease forwards;
+  opacity: 0;
+}
+.mobile-menu.open .mobile-link:nth-child(2)  { animation-delay: 0.05s; }
+.mobile-menu.open .mobile-link:nth-child(3)  { animation-delay: 0.1s; }
+.mobile-menu.open .mobile-link:nth-child(4)  { animation-delay: 0.15s; }
+.mobile-menu.open .mobile-link:nth-child(5)  { animation-delay: 0.2s; }
+.mobile-menu.open .mobile-link:nth-child(6)  { animation-delay: 0.25s; }
+.mobile-menu.open .mobile-link:nth-child(7)  { animation-delay: 0.3s; }
+.mobile-menu.open .mobile-cta               { animation-delay: 0.35s; }
+
+/* Tooltip-style hover on tech pills */
+.tech-pill { transition: all 0.15s ease; }
+.tech-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,212,255,0.2);
+}
+.tech-pill.green:hover { box-shadow: 0 2px 8px rgba(0,255,136,0.2); }
+
+/* Print styles */
+@media print {
+  .cursor, .cursor-ring, .grid-bg, .noise, #neural-canvas,
+  nav, .status-bar, .hero-scroll, .hamburger, .mobile-menu { display: none !important; }
+  body { background: #fff; color: #000; padding: 0; cursor: auto; }
+  section { padding: 24px; }
+  .section-title, .hero-name { color: #000; -webkit-text-fill-color: #000; }
+  a { color: #000; text-decoration: underline; }
+}
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -1280,7 +1419,7 @@ section {
     <li><a href="#skills">Skills</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="mailto:harrydavidson4@hotmail.com" class="nav-cta">Let's Talk →</a>
+  <a href="/cdn-cgi/l/email-protection#5c343d2e2e25383d2a35382f3332681c343328313d3530723f3331" class="nav-cta">Let's Talk →</a>
   <button class="hamburger" id="hamburger" aria-label="Toggle menu">
     <span></span><span></span><span></span>
   </button>
@@ -1295,7 +1434,7 @@ section {
   <a href="#skills" class="mobile-link">04 // Skills</a>
   <a href="#certifications" class="mobile-link">05 // Certifications</a>
   <a href="#contact" class="mobile-link">06 // Contact</a>
-  <a href="mailto:harrydavidson4@hotmail.com" class="mobile-cta">✉ Let's Talk</a>
+  <a href="/cdn-cgi/l/email-protection#4129203333382520372825322e2f7501292e352c20282d6f222e2c" class="mobile-cta">✉ Let's Talk</a>
 </div>
 
 <!-- HERO -->
@@ -1778,7 +1917,7 @@ section {
   </div>
 </section>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // CUSTOM CURSOR
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursorRing');
@@ -1885,6 +2024,28 @@ const observer = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.reveal, .timeline-item').forEach(el => observer.observe(el));
 
+// NAV SCROLL SHRINK + ACTIVE SECTION HIGHLIGHT
+const nav = document.querySelector('nav');
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+
+window.addEventListener('scroll', () => {
+  // Shrink nav on scroll
+  if (window.scrollY > 60) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+
+  // Active nav link
+  let current = '';
+  sections.forEach(sec => {
+    const top = sec.offsetTop - 100;
+    if (window.scrollY >= top) current = sec.id;
+  });
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+  });
+}, { passive: true });
+
 // HAMBURGER MENU
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
@@ -1906,11 +2067,4 @@ hamburger.addEventListener('click', () => {
 });
 mobileClose.addEventListener('click', closeMenu);
 
-document.querySelectorAll('.mobile-link, .mobile-cta').forEach(link => {
-  link.addEventListener('click', closeMenu);
-});
-
-function updateTime() {
-  const now = new Date();
-  const ist = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
-  const 
+document.querySelectorAll('.mobile-link, .mobile-cta').for
